@@ -9,8 +9,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class NewsController extends AbstractController
 {
-    #[Route('api/news/{id}', name: 'api_new', methods: ['GET'])]
-    public function getNew(string $id=null): Response
+    // #[Route('api/news/{id}', name: 'api_news', methods: ['GET'])]
+    #[Route('api/news/{id}', name: 'api_news')]
+    public function getNew(int $id=null): Response
     {
         // TODO - Criar uma query REAL
         $new = [
