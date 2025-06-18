@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+	<main class="container">
+		<h1>Reportagens</h1>
+		<div style="max-width: 330px" class="form-signin w-100 m-auto">
+			<form class="text-center mt-5" action="" method="get">
+				<img class="mb-4" src="{{ asset('img/signin.png') }}" alt="" width="72" height="57">
+				<h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+				<div class="form-floating">
+					<input type="text" class="form-control" id="nome" name="nome" placeholder="nome">
+					<label for="nome">Digite seu nome</label>
+				</div>
+
+				<div class="form-floating">
+					<input type="text" class="form-control" id="sobrenome" name="sobrenome" placeholder="sobrenome">
+					<label for="sobrenome">Digite seu sobrenome</label>
+				</div>
+
+				<button class="btn btn-primary w-100 py-2" type="submit">Enviar</button>
+				<p class="mt-5 mb-3 text-body-secondary">&copy; David Barreto – 2025</p>
+			</form>
+		</div>
+	</main>
+
+{% endblock %}
