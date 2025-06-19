@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\News;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,5 +26,23 @@ class NewsController extends AbstractController
 
         ];
         return new JsonResponse($new);
+    }
+
+    #[route('news/new')]
+    public function new(EntityManagerInterface $entityManager): Response
+    {
+        $rand = rand(18, 30);
+        $news = new News();
+        $news->setTitle('Jovem de ' .  $rand . ' anos é agredido por uma mariposa apaixonada de guadalupe');
+        $news->setDescription('Um jovem ardanueiro de ' .  $rand . ' anos que passava na rua Guadalupe se deparou com uma situação minimamente inusitada: Foi atacado por um grupo de mariposas vermelhas no momento em que a caixa onde elas estavam caiu do trem em movimento.');
+
+        $entityManager->persist($news);
+        $entityManager->flush();
+        
+        return new Response(
+            '<h2>Última Notícia:</h2>' . $news->getTitle() .
+            '<h3>Descrição:</h3>'. $news->getDescription() .
+            '<h3>Atualizada em:</h3>' . $news->getCreateAt()->format('d/m/Y - h:i:s')
+        );
     }
 }
