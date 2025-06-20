@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Service\NewsService;
+use App\Entity\News;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,8 +39,43 @@ class HomeController extends AbstractController
         ]);
     }
 
+    // #[Route('/categoria/{slug}', name: 'app_category')]
+    // public function category(string $slug, NewsService $service): Response
+    // {
+
+    //     $categories = [
+    //         ['title' => 'Mundo',            'text' => 'Notícias sobre o Mundo'],
+    //         ['title' => 'Brasil',           'text' => 'Notícias sobre o Brasil'],
+    //         ['title' => 'Tecnologia',       'text' => 'Notícias sobre Tecnologia'],
+    //         ['title' => 'Design',           'text' => 'Notícias sobre Design'],
+    //         ['title' => 'Cultura',          'text' => 'Notícias sobre Cultura'],
+    //         ['title' => 'Negócios',         'text' => 'Notícias sobre Negócios'],
+    //         ['title' => 'Política',         'text' => 'Notícias sobre Política'],
+    //         ['title' => 'Opinião',          'text' => 'Notícias sobre Opinião'],
+    //         ['title' => 'Ciência',          'text' => 'Notícias sobre Ciência'],
+    //         ['title' => 'Saúde',            'text' => 'Notícias sobre Saúde'],
+    //         ['title' => 'Estilo',           'text' => 'Notícias sobre Estilo'],
+    //         ['title' => 'Viagens',          'text' => 'Notícias sobre Viagens']
+    //     ];
+
+    //     $pageTitle = $slug;
+    //     $miniTitle = '';
+    //     foreach ($categories as $category) {
+    //         if ($category['text'] === $slug) {
+    //             $miniTitle = $category['title'];
+    //             break;
+    //         }
+    //     }
+    //     return $this->render('home/category.html.twig', [
+    //         'categories'    => $service->getCategoryList(),
+    //         'pageTitle'     => $pageTitle,
+    //         'news'          =>$service->getNewsList(),
+    //         'miniTitle'     => $miniTitle
+    //     ]);
+    // }
+
     #[Route('/categoria/{slug}', name: 'app_category')]
-    public function category(string $slug, NewsService $service): Response
+    public function category(string $slug, EntityManagerInterface $entityManager): Response
     {
 
         $categories = [
@@ -56,8 +93,10 @@ class HomeController extends AbstractController
             ['title' => 'Viagens',          'text' => 'Notícias sobre Viagens']
         ];
 
+        $newsRepository = $entityManager->getRepository(News::class);
         $pageTitle = $slug;
         $miniTitle = '';
+        $news = $newsRepository->findAll();
         foreach ($categories as $category) {
             if ($category['text'] === $slug) {
                 $miniTitle = $category['title'];
@@ -65,9 +104,8 @@ class HomeController extends AbstractController
             }
         }
         return $this->render('home/category.html.twig', [
-            'categories'    => $service->getCategoryList(),
             'pageTitle'     => $pageTitle,
-            'news'          =>$service->getNewsList(),
+            'news'          => $news,
             'miniTitle'     => $miniTitle
         ]);
     }
